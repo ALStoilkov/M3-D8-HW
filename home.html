@@ -44,6 +44,11 @@
         </ul>
       </div>
     </nav>
+    <main>
+      <div class="container">
+        <div id="card-section" class="row"></div>
+      </div>
+    </main>
 
     <!-- Optional JavaScript; choose one of the two! -->
 
@@ -60,6 +65,7 @@
     ></script>
     <script>
       window.onload = async () => {
+        const cardSection = document.getElementById("card-section");
         try {
           let response = await fetch(
             "https://striveschool-api.herokuapp.com/api/product/",
@@ -73,7 +79,28 @@
           console.log(response);
           let data = await response.json();
           console.log(data);
-        } catch {}
+
+          data.forEach((product) => {
+            const card = document.createElement(`div`);
+            card.classList.add("col", "col-md-3");
+            card.innerHTML = `
+            <div class="card">
+              <img src="${product.imageUrl}" class="card-img-top" style="max-width:200px; max-height:200px; object-fit: contain" alt="${product.name} image">
+              <div class="card-body">
+                <h5 class="card-title">${product.name}</h5>
+                <p class="card-text">${product.description}</p>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Brand: ${product.brand}</li>
+                <li class="list-group-item">Price: ${product.price}</li>
+              </ul>
+            </div>
+            `;
+            cardSection.appendChild(card);
+          });
+        } catch (err) {
+          console.error(err);
+        }
       };
     </script>
   </body>

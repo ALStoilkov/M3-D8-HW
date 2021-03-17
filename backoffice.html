@@ -41,6 +41,60 @@
         </ul>
       </div>
     </nav>
+    <main>
+      <div class="container text-center">
+        <form onsubmit="addProduct(event)">
+          <div class="form-group">
+            <label for="name">Product name</label>
+            <input
+              id="name"
+              type="text"
+              class="form-control"
+              placeholder="Write the prduct name here"
+            />
+          </div>
+          <div class="form-group">
+            <label for="image">Product image</label>
+            <input
+              id="image"
+              type="url"
+              class="form-control"
+              placeholder="Place prduct image URL here"
+            />
+          </div>
+          <div class="form-group">
+            <label for="brand">Product brand</label>
+            <input
+              id="brand"
+              type="text"
+              class="form-control"
+              placeholder="Write the prduct brand here"
+            />
+          </div>
+          <div class="form-group">
+            <label for="description">Product description</label>
+            <textarea
+              id="description"
+              rows="3"
+              class="form-control"
+              placeholder="Write the product description here"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="price">Prodcut price</label>
+            <input
+              id="price"
+              type="number"
+              class="form-control"
+              placeholder="Write the prduct price here"
+            />
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Add to shop</button>
+          </div>
+        </form>
+      </div>
+    </main>
 
     <!-- Optional JavaScript; choose one of the two! -->
 
@@ -57,20 +111,39 @@
     ></script>
     <script>
       window.onload = async () => {
+        console.log("Hi");
+      };
+      const addProduct = async (e) => {
+        e.preventDefault();
+        let productData = {
+          name: document.getElementById("name").value,
+          description: document.getElementById("description").value,
+          brand: document.getElementById("brand").value,
+          imageUrl: document.getElementById("image").value,
+          price: document.getElementById("price").value,
+        };
+        console.log(productData);
         try {
           let response = await fetch(
             "https://striveschool-api.herokuapp.com/api/product/",
             {
+              method: "POST",
               headers: {
+                "Content-Type": "application/json",
                 Authorization:
                   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUyMWRmYjg5YzI2ZjAwMTU3ZjljODMiLCJpYXQiOjE2MTU5OTQzNjQsImV4cCI6MTYxNzIwMzk2NH0.1Wj7yjUNn9Xg6crLfq4mnadvyq5Fr0p5BGSYamix9GU",
               },
+              body: JSON.stringify(productData),
             }
           );
-          console.log(response);
-          let data = await response.json();
-          console.log(data);
-        } catch {}
+          if (response.ok) {
+            alert("Product created!");
+          } else {
+            alert("Try again!");
+          }
+        } catch (err) {
+          console.error(err);
+        }
       };
     </script>
   </body>
